@@ -1,0 +1,635 @@
+{
+  "planar": [
+    {
+      "mu": 0.06,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.37965348503013546,
+      "dx": -1.9381739090814858,
+      "encoder": -30.433553845683548,
+      "odo_err": -30.05390036065341,
+      "peak_lean_deg": 31.78465560265662,
+      "slip_fraction": 0.025714285714285714
+    },
+    {
+      "mu": 0.06,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.44644415360248046,
+      "dx": 2.14090831435517,
+      "encoder": 48.72168024168793,
+      "odo_err": 48.27523608808545,
+      "peak_lean_deg": 31.80552897066865,
+      "slip_fraction": 0.034428571428571426
+    },
+    {
+      "mu": 0.06,
+      "kind": "mu",
+      "arrived": false,
+      "fallen": true,
+      "x": 2.4558872817776294,
+      "dx": 1.181635999479297,
+      "encoder": 2.455887281777627,
+      "odo_err": -2.220446049250313e-15,
+      "peak_lean_deg": 31.598925565691882,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.08,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.3887284490926666,
+      "dx": -1.9956280426648767,
+      "encoder": -28.74568659139909,
+      "odo_err": -28.35695814230642,
+      "peak_lean_deg": 31.837497160835312,
+      "slip_fraction": 0.025142857142857144
+    },
+    {
+      "mu": 0.08,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.5306512012563533,
+      "dx": 2.3363530538471906,
+      "encoder": 49.86221462362533,
+      "odo_err": 49.33156342236897,
+      "peak_lean_deg": 31.885654921129763,
+      "slip_fraction": 0.035
+    },
+    {
+      "mu": 0.08,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999067034520344,
+      "dx": 0.00011550717904142516,
+      "encoder": 1.9999067034520306,
+      "odo_err": -3.774758283725532e-15,
+      "peak_lean_deg": 4.5279192531563925,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.1,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.3955636436065798,
+      "dx": -2.048777435129388,
+      "encoder": -27.123696570895984,
+      "odo_err": -26.728132927289405,
+      "peak_lean_deg": 31.76294545120321,
+      "slip_fraction": 0.02457142857142857
+    },
+    {
+      "mu": 0.1,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.5591935841248262,
+      "dx": 2.4429690673184443,
+      "encoder": 46.00779720340014,
+      "odo_err": 45.44860361927531,
+      "peak_lean_deg": 31.57201735924656,
+      "slip_fraction": 0.03357142857142857
+    },
+    {
+      "mu": 0.1,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 2.0000004180558624,
+      "dx": 5.947611028897198e-05,
+      "encoder": 2.000000418055876,
+      "odo_err": 1.3766765505351941e-14,
+      "peak_lean_deg": 5.548517938784936,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.12,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.4003668133585543,
+      "dx": -2.0981761698881214,
+      "encoder": -25.565042456375632,
+      "odo_err": -25.164675643017077,
+      "peak_lean_deg": 31.575041350143884,
+      "slip_fraction": 0.024
+    },
+    {
+      "mu": 0.12,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.9160903121374868,
+      "dx": 2.9403795642597017,
+      "encoder": 41.57639165561093,
+      "odo_err": 40.66030134347344,
+      "peak_lean_deg": 31.779440523167768,
+      "slip_fraction": 0.030571428571428572
+    },
+    {
+      "mu": 0.12,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 2.0000863716318205,
+      "dx": 5.667767825378169e-06,
+      "encoder": 2.000086371631811,
+      "odo_err": -9.325873406851315e-15,
+      "peak_lean_deg": 6.586663597203447,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.15,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.41282432181431983,
+      "dx": -2.1693673434363263,
+      "encoder": -23.93198608006709,
+      "odo_err": -23.51916175825277,
+      "peak_lean_deg": 31.86363735811652,
+      "slip_fraction": 0.023428571428571427
+    },
+    {
+      "mu": 0.15,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.9177132437394057,
+      "dx": 3.026691280134726,
+      "encoder": 37.430417185120696,
+      "odo_err": 36.51270394138129,
+      "peak_lean_deg": 31.801518361415884,
+      "slip_fraction": 0.029285714285714286
+    },
+    {
+      "mu": 0.15,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 2.000072489690872,
+      "dx": 1.078367605045058e-05,
+      "encoder": 2.0000724896908864,
+      "odo_err": 1.4210854715202004e-14,
+      "peak_lean_deg": 7.5182402231202285,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.2,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.42525432844225375,
+      "dx": -2.2732483802150267,
+      "encoder": -21.290060299958906,
+      "odo_err": -20.864805971516653,
+      "peak_lean_deg": 31.822427602933473,
+      "slip_fraction": 0.02242857142857143
+    },
+    {
+      "mu": 0.2,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.9152544365914841,
+      "dx": 3.1522321651577867,
+      "encoder": 31.79745804059597,
+      "odo_err": 30.882203604004484,
+      "peak_lean_deg": 31.571760443797015,
+      "slip_fraction": 0.027428571428571427
+    },
+    {
+      "mu": 0.2,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999499552542948,
+      "dx": 8.278357110676614e-05,
+      "encoder": 1.9999499552543092,
+      "odo_err": 1.4432899320127035e-14,
+      "peak_lean_deg": 7.437808397673229,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.3,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.4441126427816494,
+      "dx": -2.4447347771223917,
+      "encoder": -17.36103138674492,
+      "odo_err": -16.91691874396327,
+      "peak_lean_deg": 31.78199285575142,
+      "slip_fraction": 0.02085714285714286
+    },
+    {
+      "mu": 0.3,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.9176106406335585,
+      "dx": 3.350800862541793,
+      "encoder": 24.49394406611176,
+      "odo_err": 23.5763334254782,
+      "peak_lean_deg": 31.717043022720127,
+      "slip_fraction": 0.024857142857142855
+    },
+    {
+      "mu": 0.3,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999108454460228,
+      "dx": 0.00010373446269218052,
+      "encoder": 1.9999108454460297,
+      "odo_err": 6.8833827526759706e-15,
+      "peak_lean_deg": 7.366343697228925,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.5,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.46738074483394304,
+      "dx": -2.690631878068637,
+      "encoder": -12.449586844618276,
+      "odo_err": -11.982206099784333,
+      "peak_lean_deg": 31.709132398745062,
+      "slip_fraction": 0.018714285714285715
+    },
+    {
+      "mu": 0.5,
+      "kind": "tilt",
+      "arrived": false,
+      "fallen": true,
+      "x": 0.8569686226013673,
+      "dx": 3.6422703534845784,
+      "encoder": 14.325276798839832,
+      "odo_err": 13.468308176238464,
+      "peak_lean_deg": 28.2651520730739,
+      "slip_fraction": 0.020428571428571428
+    },
+    {
+      "mu": 0.5,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999016513957062,
+      "dx": 0.00010715081614992821,
+      "encoder": 1.9999016513957228,
+      "odo_err": 1.6653345369377348e-14,
+      "peak_lean_deg": 7.319282823131191,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.8,
+      "kind": "step",
+      "arrived": false,
+      "fallen": true,
+      "x": -0.47928318485782795,
+      "dx": -2.9183632756489954,
+      "encoder": -8.590486532211328,
+      "odo_err": -8.1112033473535,
+      "peak_lean_deg": 31.229012715154855,
+      "slip_fraction": 0.01685714285714286
+    },
+    {
+      "mu": 0.8,
+      "kind": "tilt",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999024623986454,
+      "dx": 0.00010609003225834126,
+      "encoder": 1.9999024623986443,
+      "odo_err": -1.1102230246251565e-15,
+      "peak_lean_deg": 7.310698951310111,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 0.8,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999024623986454,
+      "dx": 0.00010609003225834126,
+      "encoder": 1.9999024623986443,
+      "odo_err": -1.1102230246251565e-15,
+      "peak_lean_deg": 7.310698951310111,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 1.0,
+      "kind": "step",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999337766978063,
+      "dx": 6.737110233008793e-06,
+      "encoder": 1.9999337766977963,
+      "odo_err": -9.992007221626409e-15,
+      "peak_lean_deg": 6.02513970006585,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 1.0,
+      "kind": "tilt",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999024623986454,
+      "dx": 0.00010609003225834126,
+      "encoder": 1.9999024623986443,
+      "odo_err": -1.1102230246251565e-15,
+      "peak_lean_deg": 7.310698951310111,
+      "slip_fraction": 0.0
+    },
+    {
+      "mu": 1.0,
+      "kind": "mu",
+      "arrived": true,
+      "fallen": false,
+      "x": 1.9999024623986454,
+      "dx": 0.00010609003225834126,
+      "encoder": 1.9999024623986443,
+      "odo_err": -1.1102230246251565e-15,
+      "peak_lean_deg": 7.310698951310111,
+      "slip_fraction": 0.0
+    }
+  ],
+  "identify": [
+    {
+      "mu": 0.1,
+      "mu_hat": 0.10000000000000002,
+      "slipped": true,
+      "t_slip": 0.888
+    },
+    {
+      "mu": 0.15,
+      "mu_hat": 0.15,
+      "slipped": true,
+      "t_slip": 1.088
+    },
+    {
+      "mu": 0.2,
+      "mu_hat": 0.1999999999999998,
+      "slipped": true,
+      "t_slip": 1.508
+    },
+    {
+      "mu": 0.3,
+      "mu_hat": 0.29999999999999993,
+      "slipped": true,
+      "t_slip": 1.508
+    },
+    {
+      "mu": 0.45,
+      "mu_hat": 0.44999999999999996,
+      "slipped": true,
+      "t_slip": 1.508
+    },
+    {
+      "mu": 0.7,
+      "mu_hat": 0.7,
+      "slipped": true,
+      "t_slip": 1.508
+    }
+  ],
+  "recovery": [
+    {
+      "mu": 0.05,
+      "lean_deg": 2,
+      "recovered": true
+    },
+    {
+      "mu": 0.05,
+      "lean_deg": 4,
+      "recovered": true
+    },
+    {
+      "mu": 0.05,
+      "lean_deg": 6,
+      "recovered": false
+    },
+    {
+      "mu": 0.05,
+      "lean_deg": 8,
+      "recovered": false
+    },
+    {
+      "mu": 0.05,
+      "lean_deg": 10,
+      "recovered": false
+    },
+    {
+      "mu": 0.05,
+      "lean_deg": 12,
+      "recovered": false
+    },
+    {
+      "mu": 0.08,
+      "lean_deg": 2,
+      "recovered": true
+    },
+    {
+      "mu": 0.08,
+      "lean_deg": 4,
+      "recovered": true
+    },
+    {
+      "mu": 0.08,
+      "lean_deg": 6,
+      "recovered": true
+    },
+    {
+      "mu": 0.08,
+      "lean_deg": 8,
+      "recovered": true
+    },
+    {
+      "mu": 0.08,
+      "lean_deg": 10,
+      "recovered": false
+    },
+    {
+      "mu": 0.08,
+      "lean_deg": 12,
+      "recovered": false
+    },
+    {
+      "mu": 0.12,
+      "lean_deg": 2,
+      "recovered": true
+    },
+    {
+      "mu": 0.12,
+      "lean_deg": 4,
+      "recovered": true
+    },
+    {
+      "mu": 0.12,
+      "lean_deg": 6,
+      "recovered": true
+    },
+    {
+      "mu": 0.12,
+      "lean_deg": 8,
+      "recovered": true
+    },
+    {
+      "mu": 0.12,
+      "lean_deg": 10,
+      "recovered": true
+    },
+    {
+      "mu": 0.12,
+      "lean_deg": 12,
+      "recovered": true
+    },
+    {
+      "mu": 0.2,
+      "lean_deg": 2,
+      "recovered": true
+    },
+    {
+      "mu": 0.2,
+      "lean_deg": 4,
+      "recovered": true
+    },
+    {
+      "mu": 0.2,
+      "lean_deg": 6,
+      "recovered": true
+    },
+    {
+      "mu": 0.2,
+      "lean_deg": 8,
+      "recovered": true
+    },
+    {
+      "mu": 0.2,
+      "lean_deg": 10,
+      "recovered": true
+    },
+    {
+      "mu": 0.2,
+      "lean_deg": 12,
+      "recovered": true
+    },
+    {
+      "mu": 0.4,
+      "lean_deg": 2,
+      "recovered": true
+    },
+    {
+      "mu": 0.4,
+      "lean_deg": 4,
+      "recovered": true
+    },
+    {
+      "mu": 0.4,
+      "lean_deg": 6,
+      "recovered": true
+    },
+    {
+      "mu": 0.4,
+      "lean_deg": 8,
+      "recovered": true
+    },
+    {
+      "mu": 0.4,
+      "lean_deg": 10,
+      "recovered": true
+    },
+    {
+      "mu": 0.4,
+      "lean_deg": 12,
+      "recovered": true
+    },
+    {
+      "mu": 0.8,
+      "lean_deg": 2,
+      "recovered": true
+    },
+    {
+      "mu": 0.8,
+      "lean_deg": 4,
+      "recovered": true
+    },
+    {
+      "mu": 0.8,
+      "lean_deg": 6,
+      "recovered": true
+    },
+    {
+      "mu": 0.8,
+      "lean_deg": 8,
+      "recovered": true
+    },
+    {
+      "mu": 0.8,
+      "lean_deg": 10,
+      "recovered": true
+    },
+    {
+      "mu": 0.8,
+      "lean_deg": 12,
+      "recovered": true
+    }
+  ],
+  "mujoco": [
+    {
+      "mu": 0.12,
+      "kind": "step",
+      "x": -0.4017658437241691,
+      "encoder": -24.564848559352853,
+      "fallen": true,
+      "arrived": false
+    },
+    {
+      "mu": 0.12,
+      "kind": "tilt",
+      "x": 0.6187852032390643,
+      "encoder": 43.46129066377381,
+      "fallen": true,
+      "arrived": false
+    },
+    {
+      "mu": 0.12,
+      "kind": "mu",
+      "x": 1.85280679572825,
+      "encoder": 1.673210443897086,
+      "fallen": true,
+      "arrived": false
+    },
+    {
+      "mu": 1.0,
+      "kind": "step",
+      "x": 1.4990521602468705,
+      "encoder": 1.5073114326252395,
+      "fallen": false,
+      "arrived": true
+    },
+    {
+      "mu": 1.0,
+      "kind": "tilt",
+      "x": 1.512633107440533,
+      "encoder": 1.5037982800220406,
+      "fallen": false,
+      "arrived": true
+    },
+    {
+      "mu": 1.0,
+      "kind": "mu",
+      "x": 1.512633107440533,
+      "encoder": 1.5037982800220406,
+      "fallen": false,
+      "arrived": true
+    }
+  ],
+  "psi_sign": 1.0
+}

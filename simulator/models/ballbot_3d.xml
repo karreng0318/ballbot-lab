@@ -1,0 +1,67 @@
+<mujoco model="ballbot3d">
+  <!-- CMU-scale ballbot, reduced drive.
+
+       The body is hinged to the ball at the ball center and the motors apply
+       a pure torque there. That is the model used to design controllers in
+       the classical papers. It does not resolve omniwheel rollers. Roller
+       contact is a separate question; see ideas/PROJECT_IDEAS.md.
+
+       Floor friction is the named pair ball_floor. The study overwrites its
+       sliding coefficients at runtime. condim 6 keeps torsional and rolling
+       friction available, both set small so sliding mu is the parameter
+       under test. -->
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.001" integrator="implicitfast" cone="elliptic" gravity="0 0 -9.81" noslip_iterations="2">
+    <flag contact="enable"/>
+  </option>
+  <default>
+    <geom contype="0" conaffinity="0" density="0" rgba="0.75 0.38 0.22 1"/>
+    <joint damping="0" armature="0" frictionloss="0"/>
+    <motor ctrllimited="true" ctrlrange="-80 80"/>
+  </default>
+  <visual>
+    <headlight ambient="0.35 0.35 0.35" diffuse="0.7 0.7 0.7"/>
+    <rgba haze="0.15 0.2 0.25 1"/>
+  </visual>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.86 0.84 0.78" rgb2="0.72 0.70 0.64"/>
+    <material name="floor" texture="grid" texrepeat="6 6" reflectance="0.05"/>
+    <material name="ball" rgba="0.16 0.17 0.2 1"/>
+    <material name="body" rgba="0.83 0.42 0.22 1"/>
+  </asset>
+  <worldbody>
+    <light pos="1.5 -1.2 3.2" dir="-0.4 0.3 -1" directional="true"/>
+    <camera name="side" pos="0.2 -2.4 0.7" xyaxes="1 0 0 0 0.25 0.97" mode="trackcom"/>
+    <geom name="floor" type="plane" size="6 6 0.1" material="floor" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+    <body name="ball" pos="0 0 0.1058">
+      <freejoint name="ball_free"/>
+      <inertial pos="0 0 0" mass="2.44" diaginertia="0.0174 0.0174 0.0174"/>
+      <geom name="ball_geom" type="sphere" size="0.1058" material="ball" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+      <site name="ball_site" pos="0 0 0" size="0.01"/>
+      <body name="body" pos="0 0 0">
+        <joint name="lean" type="ball" damping="0"/>
+        <inertial pos="0 0 0.69" mass="51.66" diaginertia="12.59 12.48 0.66"/>
+        <geom name="torso" type="capsule" fromto="0 0 0.18 0 0 1.22" size="0.07" material="body"/>
+        <geom name="head" type="sphere" pos="0 0 1.32" size="0.09" material="body"/>
+        <site name="imu" pos="0 0 0.55" size="0.015" rgba="0.1 0.4 0.8 1"/>
+      </body>
+    </body>
+  </worldbody>
+  <contact>
+    <pair name="ball_floor" geom1="ball_geom" geom2="floor" condim="6"
+          friction="0.8 0.8 0.01 0.0002 0.0002"
+          solref="0.008 1" solimp="0.9 0.95 0.001" margin="0"/>
+  </contact>
+  <actuator>
+    <motor name="roll" joint="lean" gear="1 0 0"/>
+    <motor name="pitch" joint="lean" gear="0 1 0"/>
+    <motor name="yaw" joint="lean" gear="0 0 1"/>
+  </actuator>
+  <sensor>
+    <framepos name="ball_pos" objtype="body" objname="ball"/>
+    <framelinvel name="ball_vel" objtype="body" objname="ball"/>
+    <frameangvel name="ball_angvel" objtype="body" objname="ball"/>
+    <framequat name="body_quat" objtype="body" objname="body"/>
+    <frameangvel name="body_angvel" objtype="body" objname="body"/>
+  </sensor>
+</mujoco>
