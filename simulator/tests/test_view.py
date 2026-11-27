@@ -6,7 +6,14 @@ import unittest
 
 import numpy as np
 
-from experiments.view_mujoco import LiveRun, render_frame
+from experiments.view_mujoco import (
+    KEY_3,
+    KEY_KP_3,
+    LiveRun,
+    command_from_key,
+    kinds_from_group_change,
+    render_frame,
+)
 
 
 class ViewTest(unittest.TestCase):
@@ -31,6 +38,17 @@ class ViewTest(unittest.TestCase):
         # Lit torso: red channel clearly above green. Thresholds stay below the blown-out white of an overexposed frame.
         orange = np.logical_and(frame[:, :, 0] > 120, frame[:, :, 0] > frame[:, :, 1] + 25)
         self.assertGreater(int(np.count_nonzero(orange)), 30)
+
+    def test_three_selects_the_friction_aware_law(self):
+        self.assertEqual(command_from_key(KEY_3), "mu")
+        self.assertEqual(command_from_key(KEY_KP_3), "mu")
+        # MuJoCo starts with geom group 3 disabled and toggles it on key 3.
+        seen = [1, 1, 1, 0, 0, 0]
+        groups = [1, 1, 1, 1, 0, 0]
+        self.assertEqual(kinds_from_group_change(seen, groups), ["mu"])
+        self.assertEqual(seen[3], 1)
+        groups[3] = 0
+        self.assertEqual(kinds_from_group_change(seen, groups), ["mu"])
 
 
 if __name__ == "__main__":

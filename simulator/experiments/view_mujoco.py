@@ -40,10 +40,16 @@ TRAIL = {
 }
 
 # GLFW key codes. The viewer callback reports a press, not a character.
+# The numeric keypad is a different code from the top-row digit.
 KEY_SPACE = 32
 KEY_1, KEY_2, KEY_3 = 49, 50, 51
+KEY_KP_1, KEY_KP_2, KEY_KP_3 = 321, 322, 323
 KEY_R = 82
 KEY_LEFT_BRACKET, KEY_RIGHT_BRACKET = 91, 93
+# MuJoCo itself binds 1, 2, and 3 to geom groups, and group 3 starts off.
+# The viewer handles that shortcut on its own, so the passive callback often
+# never receives 3. The group bit still flips, and that flip is the command.
+GROUP_KIND = {1: "step", 2: "tilt", 3: "mu"}
 
 
 def measure_psi_sign(law: BalanceLQR) -> float:
@@ -283,6 +289,35 @@ def record(run: LiveRun, path: str, seconds: float, fps: int = 30) -> None:
     write_video(path, frames, fps)
 
 
+def command_from_key(key: int) -> str | None:
+    if key in (KEY_1, KEY_KP_1):
+        return "step"
+    if key in (KEY_2, KEY_KP_2):
+        return "tilt"
+    if key in (KEY_3, KEY_KP_3):
+        return "mu"
+    if key == KEY_SPACE:
+        return "pause"
+    if key == KEY_R:
+        return "reset"
+    if key == KEY_LEFT_BRACKET:
+        return "mu-down"
+    if key == KEY_RIGHT_BRACKET:
+        return "mu-up"
+    return None
+
+
+def kinds_from_group_change(seen: list[int], geomgroup) -> list[str]:
+    """Controller laws implied by MuJoCo toggling geom groups 1, 2, or 3."""
+    fired = []
+    for index, kind in GROUP_KIND.items():
+        now = int(geomgroup[index])
+        if now != int(seen[index]):
+            seen[index] = now
+            fired.append(kind)
+    return fired
+
+
 def _neighbor_mu(mu: float, step: int) -> float:
     ladder = list(MU_LADDER)
     if all(abs(mu - item) > 1e-9 for item in ladder):
@@ -313,25 +348,37 @@ def serve(run: LiveRun) -> None:
     print("MuJoCo window is open.")
     print("1 step LQR    2 tilt-limited    3 friction-aware")
     print("[ ] changes μ    space pauses    r resets")
+    group_seen = [int(viewer.opt.geomgroup[i]) for i in range(6)]
+
+    def announce() -> None:
+        print(f"{LABELS[run.kind]}    μ = {run.mu:.2f}")
 
     next_tick = time.perf_counter()
     while viewer.is_running():
+        acted = None
         while pending:
-            key = pending.pop(0)
-            if key == KEY_SPACE:
+            command = command_from_key(pending.pop(0))
+            if command in ("step", "tilt", "mu"):
+                run.retarget(kind=command)
+                acted = command
+                announce()
+            elif command == "pause":
                 paused["on"] = not paused["on"]
-            elif key == KEY_R:
+            elif command == "reset":
                 run.reset()
-            elif key == KEY_1:
-                run.retarget(kind="step")
-            elif key == KEY_2:
-                run.retarget(kind="tilt")
-            elif key == KEY_3:
-                run.retarget(kind="mu")
-            elif key == KEY_LEFT_BRACKET:
+                announce()
+            elif command == "mu-down":
                 run.retarget(mu=_neighbor_mu(run.mu, -1))
-            elif key == KEY_RIGHT_BRACKET:
+                announce()
+            elif command == "mu-up":
                 run.retarget(mu=_neighbor_mu(run.mu, +1))
+                announce()
+        for kind in kinds_from_group_change(group_seen, viewer.opt.geomgroup):
+            if kind == acted:
+                continue
+            run.retarget(kind=kind)
+            acted = kind
+            announce()
         with viewer.lock():
             if not paused["on"]:
                 run.step()
