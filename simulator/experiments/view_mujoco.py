@@ -205,10 +205,10 @@ def tracking_camera(model: mujoco.MjModel) -> mujoco.MjvCamera:
     cam = mujoco.MjvCamera()
     mujoco.mjv_defaultFreeCamera(model, cam)
     cam.type = mujoco.mjtCamera.mjCAMERA_TRACKING
-    cam.trackbodyid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "body")
-    cam.distance = 2.9
-    cam.azimuth = 135.0
-    cam.elevation = -12.0
+    cam.trackbodyid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "ball")
+    cam.distance = 1.85
+    cam.azimuth = 125.0
+    cam.elevation = -16.0
     return cam
 
 
@@ -303,10 +303,10 @@ def serve(run: LiveRun) -> None:
 
     viewer = mujoco.viewer.launch_passive(run.robot.model, run.robot.data, key_callback=on_key)
     viewer.cam.type = mujoco.mjtCamera.mjCAMERA_TRACKING
-    viewer.cam.trackbodyid = mujoco.mj_name2id(run.robot.model, mujoco.mjtObj.mjOBJ_BODY, "body")
-    viewer.cam.distance = 2.9
-    viewer.cam.azimuth = 135.0
-    viewer.cam.elevation = -12.0
+    viewer.cam.trackbodyid = mujoco.mj_name2id(run.robot.model, mujoco.mjtObj.mjOBJ_BODY, "ball")
+    viewer.cam.distance = 1.85
+    viewer.cam.azimuth = 125.0
+    viewer.cam.elevation = -16.0
     viewer.opt.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT] = True
     viewer.opt.flags[mujoco.mjtVisFlag.mjVIS_CONTACTFORCE] = True
 

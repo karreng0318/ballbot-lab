@@ -46,7 +46,7 @@ cd simulator
 python3 -m experiments.view_mujoco
 ```
 
-That opens MuJoCo's own window on the sphere-on-plane model. It starts as the friction-aware law on μ = 0.15, driving toward the blue mark 1.5 m ahead. Keys: `1` step LQR, `2` tilt-limited, `3` friction-aware, `[` and `]` change μ, space pauses, `r` resets. The marks on the ball show spin. Contact points and forces are drawn. The housings around the ball are visual only; the motor is still a torque at the ball center.
+That opens MuJoCo's own window on the sphere-on-plane model. It starts as the friction-aware law on μ = 0.15, driving toward the blue mark 1.5 m ahead. Keys: `1` step LQR, `2` tilt-limited, `3` friction-aware, `[` and `]` change μ, space pauses, `r` resets. The ball is the light sphere under the body, with a blue equator and an orange meridian so the roll is visible. Contact points and forces are drawn. The motor is still a torque at the ball center.
 
 On macOS, use `mjpython -m experiments.view_mujoco` instead of `python3`. With no display, write a clip:
 

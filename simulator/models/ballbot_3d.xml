@@ -29,11 +29,11 @@
     <texture name="sky" type="skybox" builtin="gradient" rgb1="0.78 0.82 0.86" rgb2="0.93 0.91 0.86" width="256" height="256"/>
     <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.90 0.88 0.82" rgb2="0.74 0.71 0.64"/>
     <material name="floor" texture="grid" texrepeat="8 8" reflectance="0.04"/>
-    <material name="ball" rgba="0.16 0.17 0.2 1" reflectance="0.12"/>
+    <material name="ball" rgba="0.82 0.84 0.88 1" specular="0.55" shininess="0.45" reflectance="0.08"/>
   </asset>
   <worldbody>
     <light pos="1.5 -1.6 3.4" dir="-0.35 0.35 -1" directional="true" castshadow="true" diffuse="0.45 0.45 0.42" specular="0.12 0.12 0.1"/>
-    <camera name="side" pos="0.4 -2.8 0.85" xyaxes="1 0 0 0 0.22 0.98" mode="trackcom"/>
+    <camera name="side" pos="0.55 -1.7 0.42" xyaxes="1 0 0 0 0.16 0.99" mode="trackcom"/>
     <geom name="floor" type="plane" size="8 8 0.1" material="floor" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
     <!-- Goal marker. Moved at runtime. It does not collide. -->
     <body name="goal" mocap="true" pos="1.5 0 0.004">
@@ -43,22 +43,16 @@
     <body name="ball" pos="0 0 0.1058">
       <freejoint name="ball_free"/>
       <inertial pos="0 0 0" mass="2.44" diaginertia="0.0174 0.0174 0.0174"/>
-      <geom name="ball_geom" type="sphere" size="0.1058" material="ball" rgba="0.16 0.17 0.20 1" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
-      <!-- Paint on the ball so spin is visible. No contact. -->
-      <geom name="seam_x" type="sphere" pos="0.1058 0 0" size="0.026" rgba="0.93 0.78 0.35 1" contype="0" conaffinity="0"/>
-      <geom name="seam_y" type="sphere" pos="0 0.1058 0" size="0.026" rgba="0.86 0.33 0.28 1" contype="0" conaffinity="0"/>
-      <geom name="seam_z" type="sphere" pos="0 0 0.1058" size="0.026" rgba="0.35 0.55 0.75 1" contype="0" conaffinity="0"/>
+      <geom name="ball_geom" type="sphere" size="0.1058" material="ball" rgba="0.82 0.84 0.88 1" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+      <!-- Great-circle bands, just proud of the surface, so the sphere reads as a ball and the spin is visible. No contact. -->
+      <geom name="equator" type="cylinder" size="0.109 0.004" rgba="0.12 0.42 0.72 1" contype="0" conaffinity="0"/>
+      <geom name="meridian" type="cylinder" euler="0 1.5708 0" size="0.109 0.003" rgba="0.75 0.48 0.14 1" contype="0" conaffinity="0"/>
       <site name="ball_site" pos="0 0 0" size="0.01"/>
       <body name="body" pos="0 0 0">
         <joint name="lean" type="ball" damping="0"/>
         <inertial pos="0 0 0.69" mass="51.66" diaginertia="12.59 12.48 0.66"/>
-        <geom name="torso" type="capsule" fromto="0 0 0.22 0 0 1.18" size="0.075" rgba="0.83 0.42 0.22 1"/>
-        <geom name="skirt" type="cylinder" pos="0 0 0.20" size="0.16 0.028" rgba="0.22 0.23 0.26 1"/>
-        <!-- Drive housings are drawn only. The motor is still a pure torque at the ball center. -->
-        <geom name="wheel_a" type="cylinder" pos="0.148 0 0.055" euler="0 1.5708 0" size="0.052 0.016" rgba="0.22 0.23 0.26 1"/>
-        <geom name="wheel_b" type="cylinder" pos="-0.074 0.128 0.055" euler="0 1.5708 2.0944" size="0.052 0.016" rgba="0.22 0.23 0.26 1"/>
-        <geom name="wheel_c" type="cylinder" pos="-0.074 -0.128 0.055" euler="0 1.5708 -2.0944" size="0.052 0.016" rgba="0.22 0.23 0.26 1"/>
-        <geom name="head" type="sphere" pos="0 0 1.30" size="0.095" rgba="0.83 0.42 0.22 1"/>
+        <geom name="torso" type="capsule" fromto="0 0 0.108 0 0 1.18" size="0.05" rgba="0.83 0.42 0.22 1"/>
+        <geom name="head" type="sphere" pos="0 0 1.28" size="0.08" rgba="0.83 0.42 0.22 1"/>
         <site name="imu" pos="0 0 0.55" size="0.015" rgba="0.1 0.4 0.8 1"/>
       </body>
     </body>
