@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ballbot floor friction</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --ink: #1c1915;
+    --muted: #5c564c;
+    --line: #d9d2c5;
+    --card: #fffdf8;
+    --step: #9a3412;
+    --tilt: #b45309;
+    --mu: #1d4e89;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  header, main { max-width: 1100px; margin: 0 auto; padding: 28px 20px 8px; }
+  h1 { font-size: 1.7rem; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em; }
+  p.lead { margin: 0; max-width: 46rem; color: var(--muted); line-height: 1.45; }
+  .bar {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    margin: 18px 0 6px;
+  }
+  button {
+    font: inherit; font-size: 0.95rem;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; padding: 7px 14px; cursor: pointer;
+  }
+  button[aria-pressed="true"] { background: var(--ink); color: #f7f3ea; border-color: var(--ink); }
+  button.play { background: var(--mu); color: white; border-color: var(--mu); }
+  .time { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 7rem; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-bottom: 36px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  article {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 12px 14px;
+  }
+  article h2 { margin: 0 0 2px; font-size: 1.05rem; }
+  article .sub { margin: 0 0 8px; color: var(--muted); font-size: 0.86rem; min-height: 2.4em; }
+  canvas { width: 100%; height: auto; background: #f7f4ee; border-radius: 8px; display: block; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 8px; font-size: 0.86rem; }
+  .stats span { color: var(--muted); }
+  .fell { color: var(--step); font-weight: 600; }
+  footer { max-width: 1100px; margin: 0 auto; padding: 0 20px 28px; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>A 2 m move, and the floor it depends on</h1>
+  <p class="lead">Same balance law. The controller only sees roller odometry, the position you get if the ball is assumed not to slip. On a sticky floor all three arrive. On μ = 0.15 only the friction-aware law does.</p>
+  <div class="bar">
+    <button type="button" id="play" class="play">Pause</button>
+    <button type="button" class="mu" data-mu="0.15" aria-pressed="true">μ = 0.15</button>
+    <button type="button" class="mu" data-mu="1.00" aria-pressed="false">μ = 1.00</button>
+    <span class="time" id="clock">0.0 s</span>
+  </div>
+</header>
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>Playback of the planar CMU-parameter model. A cross at the lean means that robot has fallen and the trace stops.</footer>
+<script src="traj.js"></script>
+<script>
+const LABELS = {
+  step: ["Step LQR", "Goes straight for the goal."],
+  tilt: ["Tilt-limited", "Caps lean, ignores the floor."],
+  mu: ["Friction-aware", "Caps acceleration by μ, and clips torque to the cone."]
+};
+const COLORS = { step: "#9a3412", tilt: "#b45309", mu: "#1d4e89" };
+const ORDER = ["step", "tilt", "mu"];
+
+const grid = document.getElementById("grid");
+const cards = {};
+for (const kind of ORDER) {
+  const art = document.createElement("article");
+  art.innerHTML = `<h2 style="color:${COLORS[kind]}">${LABELS[kind][0]}</h2>
+    <p class="sub">${LABELS[kind][1]}</p>
+    <canvas width="640" height="420"></canvas>
+    <div class="stats">
+      <div>True x <b data-k="x">0 m</b></div>
+      <div>Encoder <b data-k="enc">0 m</b></div>
+      <div>Lean <b data-k="th">0°</b></div>
+      <div data-k="state">Rolling</div>
+    </div>`;
+  grid.appendChild(art);
+  cards[kind] = { canvas: art.querySelector("canvas"), stats: art.querySelectorAll("[data-k]") };
+}
+
+let mu = "0.15";
+let frame = 0;
+let playing = true;
+let acc = 0;
+let last = performance.now();
+
+function runOf(kind) { return window.TRAJ.runs[mu][kind]; }
+function len() { return runOf("mu").t.length; }
+
+function draw(kind) {
+  const run = runOf(kind);
+  const i = Math.min(frame, run.t.length - 1);
+  const stopped = run.fall !== null && frame >= run.fall;
+  const j = stopped ? Math.min(run.fall, run.t.length - 1) : i;
+  const x = run.x[j];
+  const th = run.theta[j];
+  const enc = run.enc[j];
+  const c = cards[kind].canvas;
+  const g = c.getContext("2d");
+  const w = c.width, h = c.height;
+  g.clearRect(0, 0, w, h);
+  const x0 = -0.55, x1 = 2.7;
+  const X = (v) => (v - x0) / (x1 - x0) * (w - 36) + 18;
+  const ground = h * 0.72;
+  const scale = (X(1) - X(0));
+  g.strokeStyle = "#cfc6b8";
+  g.lineWidth = 2;
+  g.beginPath(); g.moveTo(12, ground); g.lineTo(w - 12, ground); g.stroke();
+  g.fillStyle = "#8a8378";
+  const gx = X(window.TRAJ.goal);
+  g.fillRect(gx - 1, ground - 46, 2, 46);
+  g.beginPath(); g.moveTo(gx, ground - 46); g.lineTo(gx + 16, ground - 38); g.lineTo(gx, ground - 30); g.fill();
+
+  const r = 0.1058 * scale;
+  const bx = X(Math.max(x0, Math.min(x1, x)));
+  const by = ground - r;
+  g.fillStyle = "#2a2c31";
+  g.beginPath(); g.arc(bx, by, r, 0, Math.PI * 2); g.fill();
+  const L = 0.85 * scale;
+  const tipx = bx + Math.sin(th) * L;
+  const tipy = by - Math.cos(th) * L;
+  g.strokeStyle = COLORS[kind];
+  g.lineWidth = 10;
+  g.lineCap = "round";
+  g.beginPath(); g.moveTo(bx, by); g.lineTo(tipx, tipy); g.stroke();
+  g.fillStyle = COLORS[kind];
+  g.beginPath(); g.arc(tipx, tipy, 11, 0, Math.PI * 2); g.fill();
+
+  const ex = X(Math.max(-2, Math.min(4.5, enc)));
+  g.fillStyle = "#1d4e89";
+  g.globalAlpha = 0.85;
+  g.beginPath(); g.moveTo(ex, ground + 8); g.lineTo(ex - 6, ground + 20); g.lineTo(ex + 6, ground + 20); g.fill();
+  g.globalAlpha = 1;
+
+  if (stopped) {
+    g.strokeStyle = COLORS[kind];
+    g.lineWidth = 3;
+    g.beginPath();
+    g.moveTo(tipx - 8, tipy - 8); g.lineTo(tipx + 8, tipy + 8);
+    g.moveTo(tipx + 8, tipy - 8); g.lineTo(tipx - 8, tipy + 8);
+    g.stroke();
+  }
+
+  const stat = {};
+  cards[kind].stats.forEach((el) => { stat[el.dataset.k] = el; });
+  stat.x.textContent = x.toFixed(2) + " m";
+  const encText = Math.abs(enc) > 6 ? enc.toFixed(0) + " m" : enc.toFixed(2) + " m";
+  stat.enc.textContent = encText;
+  stat.th.textContent = (th * 180 / Math.PI).toFixed(1) + "°";
+  stat.state.textContent = stopped ? "Fell" : (Math.abs(x - window.TRAJ.goal) < 0.08 && frame > len() * 0.5 ? "Arrived" : "Moving");
+  stat.state.className = stopped ? "fell" : "";
+}
+
+function tick(now) {
+  const dt = now - last;
+  last = now;
+  if (playing) {
+    acc += dt;
+    const step = window.TRAJ.dt * 1000;
+    while (acc >= step) {
+      acc -= step;
+      frame += 1;
+      if (frame >= len()) { frame = 0; acc = 0; break; }
+    }
+  }
+  document.getElementById("clock").textContent = (frame * window.TRAJ.dt).toFixed(1) + " s";
+  for (const kind of ORDER) draw(kind);
+  requestAnimationFrame(tick);
+}
+
+document.getElementById("play").addEventListener("click", (e) => {
+  playing = !playing;
+  e.target.textContent = playing ? "Pause" : "Play";
+});
+document.querySelectorAll(".mu").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    mu = btn.dataset.mu;
+    frame = 0;
+    acc = 0;
+    document.querySelectorAll(".mu").forEach((b) => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+  });
+});
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
