@@ -94,6 +94,7 @@ class MujocoBallbot:
             ]
         )
         self.data.qpos[7:11] /= np.linalg.norm(self.data.qpos[7:11])
+        self._psi = 0.0
         mujoco.mj_forward(self.model, self.data)
 
     def state(self) -> dict[str, float]:
@@ -129,6 +130,15 @@ class MujocoBallbot:
         s = self.state()
         psi = getattr(self, "_psi", 0.0)
         return np.array([s["x"], psi, s["pitch"], s["vx"], s["wy"], s["pitch_rate"]])
+
+    def set_goal(self, x: float, y: float = 0.0) -> None:
+        """Move the floor marker. The marker is mocap and does not collide."""
+        if not hasattr(self, "_goal_mocap"):
+            body = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "goal")
+            self._goal_mocap = -1 if body < 0 else int(self.model.body_mocapid[body])
+        if self._goal_mocap < 0:
+            return
+        self.data.mocap_pos[self._goal_mocap] = (float(x), float(y), 0.004)
 
     def contact_friction_ratio(self) -> float:
         if self.data.ncon == 0:

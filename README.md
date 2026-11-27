@@ -37,7 +37,22 @@ python3 -m unittest discover -s tests
 python3 -m experiments.run_study
 ```
 
-The study rewrites `results/`. MuJoCo runs without a display. The planar tests cover the dynamics, the LQR, and the headline above (μ = 0.15 versus μ = 1).
+The study rewrites `results/`. The planar tests cover the dynamics, the LQR, and the headline above (μ = 0.15 versus μ = 1).
+
+## Watch it in MuJoCo
+
+```bash
+cd simulator
+python3 -m experiments.view_mujoco
+```
+
+That opens MuJoCo's own window on the sphere-on-plane model. It starts as the friction-aware law on μ = 0.15, driving toward the blue mark 1.5 m ahead. Keys: `1` step LQR, `2` tilt-limited, `3` friction-aware, `[` and `]` change μ, space pauses, `r` resets. The marks on the ball show spin. Contact points and forces are drawn. The housings around the ball are visual only; the motor is still a torque at the ball center.
+
+On macOS, use `mjpython -m experiments.view_mujoco` instead of `python3`. With no display, write a clip:
+
+```bash
+python3 -m experiments.view_mujoco --record ../results/mujoco_view.mp4
+```
 
 ## What the simulator is, and is not
 

@@ -10,6 +10,14 @@ python3 -m experiments.run_study
 
 Run those from this directory. Figures go to `../results/`.
 
+To watch the contact model in MuJoCo's window:
+
+```bash
+python3 -m experiments.view_mujoco
+```
+
+`1`, `2`, and `3` select the step, tilt-limited, and friction-aware laws. `[` and `]` change μ. On macOS use `mjpython` instead of `python3`. `--record ../results/mujoco_view.mp4` writes a clip when there is no display.
+
 ## Model
 
 `ballbot/planar.py` is the model to argue with. State is ball position `x`, ball spin `psi`, and lean `theta`. Positive `psi` rolls the ball toward `+x`. Positive `theta` moves the center of mass toward `+x`. Motor torque `tau` is applied to the ball about `+y`; the body feels the opposite.

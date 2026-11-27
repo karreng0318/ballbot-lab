@@ -1,4 +1,4 @@
-<mujoco model="ballbot3d">
+<mujoco model="Ballbot">
   <!-- CMU-scale ballbot, reduced drive.
 
        The body is hinged to the ball at the ball center and the motors apply
@@ -15,34 +15,50 @@
     <flag contact="enable"/>
   </option>
   <default>
-    <geom contype="0" conaffinity="0" density="0" rgba="0.75 0.38 0.22 1"/>
+    <geom contype="0" conaffinity="0" density="0" rgba="1 1 1 1"/>
     <joint damping="0" armature="0" frictionloss="0"/>
     <motor ctrllimited="true" ctrlrange="-80 80"/>
   </default>
   <visual>
-    <headlight ambient="0.35 0.35 0.35" diffuse="0.7 0.7 0.7"/>
-    <rgba haze="0.15 0.2 0.25 1"/>
+    <global offwidth="1280" offheight="720" azimuth="135" elevation="-12"/>
+    <headlight ambient="0.25 0.25 0.23" diffuse="0.15 0.15 0.14" specular="0.04 0.04 0.04"/>
+    <rgba haze="0.92 0.90 0.86 1"/>
+    <quality shadowsize="4096"/>
   </visual>
   <asset>
-    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.86 0.84 0.78" rgb2="0.72 0.70 0.64"/>
-    <material name="floor" texture="grid" texrepeat="6 6" reflectance="0.05"/>
-    <material name="ball" rgba="0.16 0.17 0.2 1"/>
-    <material name="body" rgba="0.83 0.42 0.22 1"/>
+    <texture name="sky" type="skybox" builtin="gradient" rgb1="0.78 0.82 0.86" rgb2="0.93 0.91 0.86" width="256" height="256"/>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.90 0.88 0.82" rgb2="0.74 0.71 0.64"/>
+    <material name="floor" texture="grid" texrepeat="8 8" reflectance="0.04"/>
+    <material name="ball" rgba="0.16 0.17 0.2 1" reflectance="0.12"/>
   </asset>
   <worldbody>
-    <light pos="1.5 -1.2 3.2" dir="-0.4 0.3 -1" directional="true"/>
-    <camera name="side" pos="0.2 -2.4 0.7" xyaxes="1 0 0 0 0.25 0.97" mode="trackcom"/>
-    <geom name="floor" type="plane" size="6 6 0.1" material="floor" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+    <light pos="1.5 -1.6 3.4" dir="-0.35 0.35 -1" directional="true" castshadow="true" diffuse="0.45 0.45 0.42" specular="0.12 0.12 0.1"/>
+    <camera name="side" pos="0.4 -2.8 0.85" xyaxes="1 0 0 0 0.22 0.98" mode="trackcom"/>
+    <geom name="floor" type="plane" size="8 8 0.1" material="floor" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+    <!-- Goal marker. Moved at runtime. It does not collide. -->
+    <body name="goal" mocap="true" pos="1.5 0 0.004">
+      <geom name="goal_ring" type="cylinder" size="0.18 0.004" rgba="0.11 0.30 0.54 0.45" contype="0" conaffinity="0"/>
+      <geom name="goal_core" type="cylinder" size="0.045 0.006" rgba="0.11 0.30 0.54 0.95" contype="0" conaffinity="0"/>
+    </body>
     <body name="ball" pos="0 0 0.1058">
       <freejoint name="ball_free"/>
       <inertial pos="0 0 0" mass="2.44" diaginertia="0.0174 0.0174 0.0174"/>
-      <geom name="ball_geom" type="sphere" size="0.1058" material="ball" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+      <geom name="ball_geom" type="sphere" size="0.1058" material="ball" rgba="0.16 0.17 0.20 1" contype="1" conaffinity="1" friction="1 0.005 0.0001"/>
+      <!-- Paint on the ball so spin is visible. No contact. -->
+      <geom name="seam_x" type="sphere" pos="0.1058 0 0" size="0.026" rgba="0.93 0.78 0.35 1" contype="0" conaffinity="0"/>
+      <geom name="seam_y" type="sphere" pos="0 0.1058 0" size="0.026" rgba="0.86 0.33 0.28 1" contype="0" conaffinity="0"/>
+      <geom name="seam_z" type="sphere" pos="0 0 0.1058" size="0.026" rgba="0.35 0.55 0.75 1" contype="0" conaffinity="0"/>
       <site name="ball_site" pos="0 0 0" size="0.01"/>
       <body name="body" pos="0 0 0">
         <joint name="lean" type="ball" damping="0"/>
         <inertial pos="0 0 0.69" mass="51.66" diaginertia="12.59 12.48 0.66"/>
-        <geom name="torso" type="capsule" fromto="0 0 0.18 0 0 1.22" size="0.07" material="body"/>
-        <geom name="head" type="sphere" pos="0 0 1.32" size="0.09" material="body"/>
+        <geom name="torso" type="capsule" fromto="0 0 0.22 0 0 1.18" size="0.075" rgba="0.83 0.42 0.22 1"/>
+        <geom name="skirt" type="cylinder" pos="0 0 0.20" size="0.16 0.028" rgba="0.22 0.23 0.26 1"/>
+        <!-- Drive housings are drawn only. The motor is still a pure torque at the ball center. -->
+        <geom name="wheel_a" type="cylinder" pos="0.148 0 0.055" euler="0 1.5708 0" size="0.052 0.016" rgba="0.22 0.23 0.26 1"/>
+        <geom name="wheel_b" type="cylinder" pos="-0.074 0.128 0.055" euler="0 1.5708 2.0944" size="0.052 0.016" rgba="0.22 0.23 0.26 1"/>
+        <geom name="wheel_c" type="cylinder" pos="-0.074 -0.128 0.055" euler="0 1.5708 -2.0944" size="0.052 0.016" rgba="0.22 0.23 0.26 1"/>
+        <geom name="head" type="sphere" pos="0 0 1.30" size="0.095" rgba="0.83 0.42 0.22 1"/>
         <site name="imu" pos="0 0 0.55" size="0.015" rgba="0.1 0.4 0.8 1"/>
       </body>
     </body>
