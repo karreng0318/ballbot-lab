@@ -76,6 +76,20 @@ If neither of you has a ballbot, say so early. Building one is a different proje
 
 Skip, for this collaboration: another balancing PID, a pure RL balance demo, and an obstacle-avoidance race with Vu and Nguyen.
 
+## Two ballbots as a walking aid
+
+This waits on the first paper. It is the reason a reviewer might care about the cone. It is not the paper in which the cone is derived.
+
+The picture is one ballbot at each hand, for someone relearning a step after a stroke or a leg injury. Not a walker frame. Each machine is a rolling support the person holds, and the pair has to agree on how much force each side may give. The geometry that matters first is frontal: the person tips toward the weak side, and the ballbot on that side is asked to push back. Forward walking is the second problem.
+
+A ballbot with no hand on it cannot brace. At rest the horizontal equation says the friction force is zero, so the motor torque is zero and the lean is zero. A hand changes that. The person pushes on the handle, the ballbot leans away from the load, and it can stand still. The friction that keeps the ball from sliding is the support force. On this CMU mass the weight is about 530 N, so a floor with μ = 0.15 can hold about 80 N of horizontal help. A sideways catch is often more than that. Weight the person sets down on the handle increases the normal force and therefore the friction budget, and it also increases the moment the motor must hold.
+
+So the project is a force budget, shared by two robots. Each ballbot advertises the largest horizontal force its own floor will still support, μ N, after the torque that keeps it upright is paid. The pair splits the push the person's lean is asking for. If the weak side is on a smoother patch, that machine lowers its share and the other takes what it can. If neither cone can hold the ask, both refuse and the person is cued to stop. A support that slips is a falling mass next to the person. The encoder failure from the first paper is the dangerous version of the same bug: the ballbot believes it is braced, and it is sliding into them.
+
+The drive for a clinic aisle is three omniwheels, BallIP or Rezero size, with the handles at hand height. The inverse mouse-ball machine is a large body for that aisle. The planar torque model remains the balance layer. The new contact is the hand. The new coordination is one requested force split across two cones.
+
+The experiment that belongs in a paper is not a clinical trial. A healthy person, one knee braced, two handles with load cells, tile under both machines and then a low-friction sheet under one. Record the force each side produced against the force it promised. The result to claim is that the promise stayed inside the cone, the load moved to the other side when one floor changed, and the person did not have to catch a falling robot. A gait lab is the way to get the person, the cameras, and the ethics review. Building two ballbots is a different project. The model to write first is the planar robot, twice, with the hand force added to the three equations of motion, and a person as an inverted pendulum between the handles.
+
 ## Order of work
 
 1. Both of you read Nagarajan, Kantor, Hollis (IJRR 2014), the shape-space planner (IJRR 2013), Safe-Ballbot, and asRoBallet. The PDFs that are legally straightforward are already in `papers/pdfs/`.
