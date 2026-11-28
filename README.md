@@ -15,7 +15,7 @@ On the CMU-sized machine in the planar model, with the controller told only what
 
 That is the "different μ" idea, as one law rather than a pile of controllers. The acceleration it will ask for is the smaller of two numbers: the steady acceleration of a 6° lean, and `0.65 μ g`. The motor torque is then clipped so the shear force required to keep rolling stays inside μ times the normal force. Below the μ where even that clip cannot balance, the maneuver is declined.
 
-The memo for your colleague is `ideas/PROJECT_IDEAS.md`. The reading order is `ideas/LITERATURE.md`. The numbers and figures are `results/STUDY.md`.
+The memo for your colleague is `ideas/PROJECT_IDEAS.md`. The reading order is `ideas/LITERATURE.md`. The numbers and figures are `results/STUDY.md`. The equations of motion, in ASD-STE100 Simplified Technical English, are in `viewer/equations.html`.
 
 ## What is in this folder
 

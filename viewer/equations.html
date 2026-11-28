@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ballbot equations of motion</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --ink: #1c1915;
+    --muted: #5c564c;
+    --line: #d9d2c5;
+    --card: #fffdf8;
+    --blue: #1d4e89;
+    --orange: #c45c28;
+    --ball: #d5d2cb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  header, main { max-width: 920px; margin: 0 auto; padding: 32px 20px 12px; }
+  h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 10px; }
+  h2 { font-size: 1.35rem; font-weight: 600; margin: 0 0 12px; }
+  p { margin: 0 0 10px; max-width: 40rem; }
+  .note { color: var(--muted); font-size: 0.95rem; }
+  section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 22px 8px;
+    margin: 16px 0 22px;
+  }
+  figure { margin: 8px 0 18px; }
+  figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 8px; }
+  img.photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    background: #f3efe6;
+  }
+  svg.diagram { width: 100%; height: auto; display: block; }
+  .eq {
+    font-family: "STIX Two Math", "Times New Roman", Times, serif;
+    font-size: 1.2rem;
+    background: #f7f3ea;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 8px 0 14px;
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 0.98rem; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .sym { font-family: "STIX Two Math", "Times New Roman", Times, serif; font-style: italic; white-space: nowrap; }
+  footer { max-width: 920px; margin: 0 auto; padding: 0 20px 36px; color: var(--muted); font-size: 0.92rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Equations of motion of the ballbot</h1>
+  <p>A ballbot is a robot that stands on one ball. The body must stay upright.</p>
+  <p>This page shows the equations of motion of the planar model. The words follow ASD-STE100, Simplified Technical English.</p>
+</header>
+<main>
+
+<section>
+  <h2>1. The robot</h2>
+  <figure>
+    <img class="photo" src="img/ballbot-side.jpg" alt="Side view of a ballbot. An orange body stands on a gray ball.">
+    <figcaption>Figure 1. The body stands on the ball. The ball stands on the floor.</figcaption>
+  </figure>
+  <p>The planar model looks at the robot from the side. The model has one body and one ball.</p>
+  <p>The positive direction is to the right.</p>
+</section>
+
+<section>
+  <h2>2. The three coordinates</h2>
+  <figure>
+    <svg class="diagram" viewBox="0 0 720 440" role="img" aria-label="Diagram of ball position x, ball spin psi, and lean angle theta.">
+      <line x1="48" y1="360" x2="680" y2="360" stroke="#1c1915" stroke-width="2"/>
+      <polygon points="680,360 666,354 666,366" fill="#1c1915"/>
+      <text x="624" y="388" fill="#5c564c" font-size="20" font-family="Georgia, serif">positive x</text>
+      <circle cx="250" cy="300" r="60" fill="#e7e4dc" stroke="#1c1915" stroke-width="2.5"/>
+      <path d="M250 246 A28 28 0 0 1 286 286" fill="none" stroke="#1d4e89" stroke-width="2.5"/>
+      <polygon points="286,286 274,278 280,292" fill="#1d4e89"/>
+      <text x="292" y="270" fill="#1d4e89" font-size="22" font-family="Georgia, serif">ψ</text>
+      <line x1="250" y1="300" x2="250" y2="78" stroke="#d9d2c5" stroke-width="2" stroke-dasharray="5 5"/>
+      <line x1="250" y1="300" x2="318" y2="108" stroke="#c45c28" stroke-width="16" stroke-linecap="round"/>
+      <circle cx="332" cy="92" r="22" fill="#c45c28"/>
+      <circle cx="292" cy="178" r="6" fill="#1c1915"/>
+      <line x1="250" y1="300" x2="292" y2="178" stroke="#1c1915" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <path d="M250 230 A70 70 0 0 1 276 236" fill="none" stroke="#c45c28" stroke-width="2"/>
+      <text x="258" y="214" fill="#c45c28" font-size="22" font-family="Georgia, serif">θ</text>
+      <text x="300" y="168" fill="#1c1915" font-size="18" font-family="Georgia, serif">l</text>
+      <text x="168" y="308" fill="#1c1915" font-size="20" font-family="Georgia, serif">r</text>
+      <line x1="190" y1="300" x2="250" y2="300" stroke="#5c564c" stroke-width="1.5"/>
+      <text x="228" y="392" fill="#1c1915" font-size="20" font-family="Georgia, serif">x</text>
+    </svg>
+    <figcaption>Figure 2. x is the ball position. ψ is the ball spin. θ is the lean angle. l is the distance from the ball center to the body mass center. r is the ball radius.</figcaption>
+  </figure>
+  <p>The model uses three coordinates.</p>
+  <p><span class="sym">x</span> is the position of the ball center on the floor. A positive value of <span class="sym">x</span> moves the ball to the right.</p>
+  <p><span class="sym">ψ</span> is the spin of the ball. A positive value of <span class="sym">ψ</span> rolls the ball to the right.</p>
+  <p><span class="sym">θ</span> is the lean angle of the body from the vertical line. A positive value of <span class="sym">θ</span> moves the body mass to the right.</p>
+  <p>The body mass center is <span class="sym">l</span> sin <span class="sym">θ</span> to the right of the ball center. The body mass center is <span class="sym">l</span> cos <span class="sym">θ</span> above the ball center.</p>
+  <p>A dot over a coordinate is the speed of that coordinate. Two dots over a coordinate are the acceleration of that coordinate.</p>
+</section>
+
+<section>
+  <h2>3. The forces and the torque</h2>
+  <figure>
+    <svg class="diagram" viewBox="0 0 720 440" role="img" aria-label="Diagram of friction force f, normal force N, weight, and motor torque tau.">
+      <line x1="70" y1="370" x2="650" y2="370" stroke="#1c1915" stroke-width="2"/>
+      <circle cx="300" cy="310" r="60" fill="#e7e4dc" stroke="#1c1915" stroke-width="2.5"/>
+      <line x1="300" y1="310" x2="368" y2="128" stroke="#c45c28" stroke-width="16" stroke-linecap="round"/>
+      <circle cx="382" cy="112" r="22" fill="#c45c28"/>
+      <circle cx="342" cy="194" r="6" fill="#1c1915"/>
+      <line x1="300" y1="370" x2="300" y2="292" stroke="#1d4e89" stroke-width="3"/>
+      <polygon points="300,286 294,300 306,300" fill="#1d4e89"/>
+      <text x="312" y="320" fill="#1d4e89" font-size="22" font-family="Georgia, serif">N</text>
+      <line x1="300" y1="370" x2="390" y2="370" stroke="#1d4e89" stroke-width="3"/>
+      <polygon points="396,370 382,364 382,376" fill="#1d4e89"/>
+      <text x="348" y="358" fill="#1d4e89" font-size="22" font-family="Georgia, serif">f</text>
+      <line x1="342" y1="194" x2="342" y2="292" stroke="#1c1915" stroke-width="3"/>
+      <polygon points="342,298 336,284 348,284" fill="#1c1915"/>
+      <text x="352" y="260" fill="#1c1915" font-size="20" font-family="Georgia, serif">mg</text>
+      <path d="M248 286 A40 40 0 0 1 286 250" fill="none" stroke="#c45c28" stroke-width="3"/>
+      <polygon points="286,250 272,252 282,262" fill="#c45c28"/>
+      <text x="196" y="268" fill="#c45c28" font-size="22" font-family="Georgia, serif">τ</text>
+    </svg>
+    <figcaption>Figure 3. τ is the motor torque on the ball. f is the friction force. N is the normal force. mg is the weight of the body.</figcaption>
+  </figure>
+  <p>The motor applies the torque <span class="sym">τ</span> to the ball. The body receives the torque minus <span class="sym">τ</span>.</p>
+  <p>A positive value of <span class="sym">τ</span> rolls the ball to the right. A positive value of <span class="sym">τ</span> leans the body to the left.</p>
+  <p>The floor applies two forces to the ball. <span class="sym">f</span> is the friction force. A positive value of <span class="sym">f</span> pushes the ball to the right.</p>
+  <p><span class="sym">N</span> is the normal force. <span class="sym">N</span> pushes the ball up.</p>
+</section>
+
+<section>
+  <h2>4. The three equations</h2>
+  <p><span class="sym">m</span> is the mass of the body. <span class="sym">m<sub>b</sub></span> is the mass of the ball.</p>
+  <p>Horizontal motion of the ball and the body:</p>
+  <div class="eq">(m + m<sub>b</sub>) x&#x0308; + m l cos θ · θ&#x0308; = m l sin θ · θ&#x0307;<sup>2</sup> + f</div>
+  <p>The left side is the horizontal acceleration of the two masses. <span class="sym">f</span> is the only horizontal force on the robot from the floor.</p>
+  <p>The motor torque acts between the body and the ball. This torque does not push the robot along the floor.</p>
+  <p>Spin of the ball about the ball center:</p>
+  <div class="eq">I<sub>b</sub> ψ&#x0308; = τ − r f</div>
+  <p><span class="sym">I<sub>b</sub></span> is the inertia of the ball about the ball center. The friction force acts at a distance <span class="sym">r</span> below the ball center. This force makes the torque <span class="sym">r f</span> on the ball.</p>
+  <p>Rotation of the body about the ball center:</p>
+  <div class="eq">m l cos θ · x&#x0308; + (I + m l<sup>2</sup>) θ&#x0308; = m g l sin θ − τ</div>
+  <p><span class="sym">I</span> is the inertia of the body about the body mass center. <span class="sym">g</span> is the gravity acceleration.</p>
+  <p>Gravity pulls the body mass down. A positive lean angle makes this gravity torque increase <span class="sym">θ</span>.</p>
+</section>
+
+<section>
+  <h2>5. The normal force</h2>
+  <figure>
+    <img class="photo" src="img/ballbot-contact.jpg" alt="Close view of the ball at the contact with the floor.">
+    <figcaption>Figure 4. The ball touches the floor at one point. The normal force acts at this point.</figcaption>
+  </figure>
+  <p>The ball center does not move up or down. Only the body mass center can move up or down.</p>
+  <div class="eq">z&#x0308; = −l sin θ · θ&#x0308; − l cos θ · θ&#x0307;<sup>2</sup></div>
+  <div class="eq">N = (m + m<sub>b</sub>) g + m z&#x0308;</div>
+  <p><span class="sym">z&#x0308;</span> is the vertical acceleration of the body mass center. When the body falls, <span class="sym">N</span> decreases.</p>
+  <p>The ball leaves the floor when <span class="sym">N</span> is zero.</p>
+</section>
+
+<section>
+  <h2>6. Roll with no slip</h2>
+  <figure>
+    <svg class="diagram" viewBox="0 0 720 280" role="img" aria-label="Two contacts. The left contact does not slip. The right contact slips.">
+      <text x="70" y="32" fill="#1c1915" font-size="20" font-family="Georgia, serif">No slip</text>
+      <text x="430" y="32" fill="#1c1915" font-size="20" font-family="Georgia, serif">Slip</text>
+      <line x1="40" y1="220" x2="320" y2="220" stroke="#1c1915" stroke-width="2"/>
+      <circle cx="170" cy="160" r="60" fill="#e7e4dc" stroke="#1c1915" stroke-width="2.5"/>
+      <circle cx="170" cy="220" r="4" fill="#1d4e89"/>
+      <text x="78" y="258" fill="#1d4e89" font-size="18" font-family="Georgia, serif">x&#x0307; = r ψ&#x0307;</text>
+      <line x1="400" y1="220" x2="690" y2="220" stroke="#1c1915" stroke-width="2"/>
+      <circle cx="520" cy="160" r="60" fill="#e7e4dc" stroke="#1c1915" stroke-width="2.5"/>
+      <line x1="520" y1="220" x2="610" y2="220" stroke="#9a3412" stroke-width="3"/>
+      <polygon points="616,220 602,214 602,226" fill="#9a3412"/>
+      <text x="560" y="208" fill="#9a3412" font-size="18" font-family="Georgia, serif">slip</text>
+      <text x="430" y="258" fill="#9a3412" font-size="18" font-family="Georgia, serif">slip speed = x&#x0307; − r ψ&#x0307;</text>
+    </svg>
+    <figcaption>Figure 5. With no slip, the contact point does not move on the floor. With slip, the contact point moves.</figcaption>
+  </figure>
+  <p>The ball rolls with no slip when the contact point does not move on the floor.</p>
+  <div class="eq">x&#x0307; = r ψ&#x0307;</div>
+  <p>You can remove <span class="sym">f</span> and <span class="sym">ψ</span> from the three equations when this equation is true. Two equations in <span class="sym">x</span> and <span class="sym">θ</span> remain:</p>
+  <div class="eq">(m + m<sub>b</sub> + I<sub>b</sub> / r<sup>2</sup>) x&#x0308; + m l cos θ · θ&#x0308; = m l sin θ · θ&#x0307;<sup>2</sup> + τ / r</div>
+  <div class="eq">m l cos θ · x&#x0308; + (I + m l<sup>2</sup>) θ&#x0308; = m g l sin θ − τ</div>
+  <p>The balance controller uses these two equations.</p>
+  <p>The no-slip equation is true only when <span class="sym">f</span> is between <span class="sym">−μ N</span> and <span class="sym">μ N</span>. <span class="sym">μ</span> is the friction coefficient of the floor.</p>
+</section>
+
+<section>
+  <h2>7. When the ball slips</h2>
+  <p>The ball slips when the friction for no slip is larger than <span class="sym">μ N</span>.</p>
+  <p>The slip speed is <span class="sym">x&#x0307; − r ψ&#x0307;</span>. When the ball slips, the friction force is <span class="sym">μ N</span>. The friction force has the opposite direction of the slip.</p>
+  <div class="eq">f = −μ N · sign(x&#x0307; − r ψ&#x0307;)</div>
+  <p>Use this force in the three equations of section 4. Do not use the two no-slip equations.</p>
+</section>
+
+<section>
+  <h2>8. Names in the equations</h2>
+  <table>
+    <thead>
+      <tr><th>Symbol</th><th>Name</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="sym">x</td><td>Position of the ball center on the floor</td></tr>
+      <tr><td class="sym">ψ</td><td>Spin of the ball</td></tr>
+      <tr><td class="sym">θ</td><td>Lean angle of the body</td></tr>
+      <tr><td class="sym">τ</td><td>Motor torque on the ball</td></tr>
+      <tr><td class="sym">f</td><td>Friction force on the ball</td></tr>
+      <tr><td class="sym">N</td><td>Normal force on the ball</td></tr>
+      <tr><td class="sym">m</td><td>Mass of the body</td></tr>
+      <tr><td class="sym">m<sub>b</sub></td><td>Mass of the ball</td></tr>
+      <tr><td class="sym">I</td><td>Inertia of the body about the body mass center</td></tr>
+      <tr><td class="sym">I<sub>b</sub></td><td>Inertia of the ball about the ball center</td></tr>
+      <tr><td class="sym">l</td><td>Distance from the ball center to the body mass center</td></tr>
+      <tr><td class="sym">r</td><td>Radius of the ball</td></tr>
+      <tr><td class="sym">g</td><td>Gravity acceleration</td></tr>
+      <tr><td class="sym">μ</td><td>Friction coefficient of the floor</td></tr>
+    </tbody>
+  </table>
+  <p>These equations are the same equations as in <span class="sym">simulator/ballbot/planar.py</span>.</p>
+</section>
+
+</main>
+<footer>
+  <p>ASD-STE100 limits the words and the length of each sentence. Each sentence gives one fact.</p>
+</footer>
+</body>
+</html>
